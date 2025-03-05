@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import styles from './landing.module.css';
+import { io } from 'socket.io-client';
 
 const Landing = () => {
   const router = useRouter();
@@ -9,7 +10,7 @@ const Landing = () => {
   };
 
   const handleJoinRoom = () => {
-    router.push('room/room');
+    router.push('/join-room');
   };
 
   return (
