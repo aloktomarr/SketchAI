@@ -66,13 +66,14 @@
 }
 
 /* Chat section */
-.chat {
+.chatContainer {
   width: 20%;
   padding: 15px;
   background-color: #fff;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .chat h2 {
@@ -84,13 +85,38 @@
   border-bottom: 1px solid #eee;
 }
 
-.messages {
+.messagesContainer {
   flex: 1;
   overflow-y: auto;
   padding: 10px;
   background-color: #f5f5f5;
   border-radius: 5px;
   margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 200px);
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f5f5f5;
+}
+
+/* Custom scrollbar styles */
+.messagesContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.messagesContainer::-webkit-scrollbar-track {
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+
+.messagesContainer::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+  border: 2px solid #f5f5f5;
+}
+
+.messagesContainer::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
 }
 
 .messageItem {
@@ -159,7 +185,7 @@
     flex-direction: column;
   }
   
-  .rankings, .chat {
+  .rankings, .chatContainer {
     width: 100%;
     height: 25vh;
   }
@@ -196,4 +222,88 @@
 
 .connectionError p {
   color: #666;
+}
+
+/* Add these styles to your existing CSS */
+
+.startGameButton {
+  margin-top: 20px;
+  padding: 10px 15px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+}
+
+.startGameButton:hover {
+  background-color: #45a049;
+}
+
+.currentWord {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #e3f2fd;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.currentWord h3 {
+  margin: 0 0 5px 0;
+  color: #1976d2;
+  font-size: 14px;
+}
+
+.currentWord p {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.wordHint {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #fff3e0;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ffe0b2;
+}
+
+.wordHint h3 {
+  margin: 0 0 10px 0;
+  color: #ff9800;
+  font-size: 16px;
+}
+
+.wordHint p {
+  margin: 0;
+  font-size: 24px;
+  letter-spacing: 5px;
+  color: #333;
+  font-family: monospace;
+  font-weight: bold;
+}
+
+.systemMessage {
+  background-color: #f5f5f5;
+  border-left: 3px solid #9e9e9e;
+  font-style: italic;
+  color: #555;
+}
+
+/* Add or update these styles to ensure the board container is properly sized */
+.boardContainer {
+  flex: 1;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f5f5f5;
+  overflow: hidden;
+  height: 100%;
 }

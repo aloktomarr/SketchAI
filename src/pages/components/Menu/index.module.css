@@ -1,23 +1,81 @@
 .menuContainer {
-    @apply absolute px-5 py-1 flex justify-between w-1/4 left-1/2 top-10 rounded-md;
-    border: 1px solid theme('colors.border1');
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    position: absolute;
+    top: 10px;
+    left: 50%;
     transform: translateX(-50%);
-    box-shadow: theme('colors.shadow1');
-    background-color: theme('colors.background1');
+    z-index: 10;
+    background-color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
 
-    .iconWrapper {
-        @apply cursor-pointer flex justify-center items-center h-10 w-10 rounded-md;
+.iconWrapper {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
 
-        &:hover, &.active {
-            background-color: theme('colors.text2');
-        }
-        .icon {
-            color: theme('colors.text1');
-            font-size: 20px;
-        }
+.iconWrapper:hover {
+    background-color: #f0f0f0;
+}
+
+.iconWrapper.active {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.iconWrapper.actionIcon:hover {
+    background-color: #f5f5f5;
+    transform: scale(1.05);
+}
+
+.icon {
+    font-size: 20px;
+    color: #555;
+}
+
+.active .icon {
+    color: #1976d2;
+}
+
+/* Add a tooltip effect */
+.iconWrapper:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0.9;
+}
+
+@media (max-width: 640px) {
+    .menuContainer {
+        padding: 5px 10px;
+        gap: 5px;
     }
-
-    @media screen and (max-width: 640px) {
-        @apply w-3/4;
+    
+    .iconWrapper {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .icon {
+        font-size: 16px;
     }
 }
