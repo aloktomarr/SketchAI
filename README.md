@@ -2,11 +2,6 @@
 
 A dynamic collaborative drawing platform with both free-form sketching and a fun word-guessing game mode, inspired by Excalidraw and Skribble.io.
 
-![image](https://github.com/RandomThacker/sketchbook/assets/141705990/9c1dbd89-4b0e-41f0-b3e9-901e832d4db9)
-
-## 🔗 Live link
-
-**[https://sketchbook-random.vercel.app/](https://sketchbook-random.vercel.app/)**
 
 ## 📓 Features 
 
@@ -60,12 +55,12 @@ To set up the project locally, follow these steps:
 
 1. Clone the repository:
     ```bash
-    https://github.com/RandomThacker/sketchbook.git
+    git clone https://github.com/aloktomarr/SketchAI.git
     ```
 
 2. Navigate to the project directory:
     ```bash
-    cd sketchbook
+    cd SketchAI
     ```
 
 3. Install the required dependencies:
@@ -79,3 +74,5 @@ To set up the project locally, follow these steps:
     ```
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+NEXT_PUBLIC_SOCKET_URL=https://sketchai-backend.onrender.com

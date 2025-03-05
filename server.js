@@ -1,16 +1,28 @@
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
+const cors = require('cors');
 
 const app = express();
+app.use(cors());
+
 const server = http.createServer(app);
+
+// Track connections per IP
+const connectionsPerIP = {};
+
+// Configure CORS for Socket.io
 const io = new Server(server, {
   cors: {
-    origin: "*", // Allow connections from any origin for development
+    origin: process.env.NODE_ENV === 'production' 
+      ? ["https://sketchai.vercel.app", "https://www.sketchai.vercel.app"] 
+      : "*",
     methods: ["GET", "POST"]
-  }
+  },
+  pingTimeout: 60000, // Increase timeout for better connection stability
 });
 
+// Room data storage
 let rooms = {};
 
 const GAME_STATES = {
@@ -32,11 +44,51 @@ const WORDS = {
   hard: ['skyscraper', 'earthquake', 'astronaut', 'lighthouse', 'waterfall', 'dinosaur', 'volcano', 'orchestra', 'submarine']
 };
 
+// Socket.io connection limits
+io.use((socket, next) => {
+  const clientIp = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address;
+  
+  // Initialize or increment connection count
+  connectionsPerIP[clientIp] = (connectionsPerIP[clientIp] || 0) + 1;
+  
+  // Limit connections per IP (5 is reasonable for most use cases)
+  if (connectionsPerIP[clientIp] > 5) {
+    return next(new Error('Too many connections from this IP'));
+  }
+  
+  // Clean up when client disconnects
+  socket.on('disconnect', () => {
+    if (connectionsPerIP[clientIp]) {
+      connectionsPerIP[clientIp]--;
+      if (connectionsPerIP[clientIp] <= 0) {
+        delete connectionsPerIP[clientIp];
+      }
+    }
+  });
+  
+  next();
+});
+
+// Update room activity timestamp
+function updateRoomActivity(roomId) {
+  if (rooms[roomId]) {
+    rooms[roomId].lastActivity = Date.now();
+  }
+}
+
 io.on('connection', (socket) => {
   console.log('a user connected:', socket.id);
 
+  // Limit total number of rooms
   socket.on('createRoom', ({ room, name }) => {
     console.log(`Creating room ${room} by ${name}`);
+    
+    // Limit total rooms to prevent memory issues
+    if (Object.keys(rooms).length >= 50) {
+      socket.emit('error', 'Server is at capacity. Please try again later.');
+      return;
+    }
+    
     if (!rooms[room]) {
       rooms[room] = {
         players: [{ id: socket.id, name, score: 0 }],
@@ -49,7 +101,8 @@ io.on('connection', (socket) => {
         roundTimeLeft: 0,
         timer: null,
         correctGuessers: [],
-        wordHint: null
+        wordHint: null,
+        lastActivity: Date.now() // Track room activity
       };
       socket.join(room);
       socket.emit('roomCreated', room);
@@ -62,6 +115,14 @@ io.on('connection', (socket) => {
   socket.on('joinRoom', ({ room, name }) => {
     console.log(`${name} is trying to join room ${room}`);
     if (rooms[room]) {
+      // Limit players per room
+      if (rooms[room].players.length >= 10) {
+        socket.emit('error', 'Room is full (max 10 players)');
+        return;
+      }
+      
+      updateRoomActivity(room);
+      
       // Check if player is already in the room (might be rejoining)
       const existingPlayerIndex = rooms[room].players.findIndex(p => p.id === socket.id);
       if (existingPlayerIndex >= 0) {
@@ -96,6 +157,13 @@ io.on('connection', (socket) => {
     if (!data.room || !rooms[data.room]) {
       console.log('beginPath: Invalid room', data.room);
       return;
+    }
+    
+    updateRoomActivity(data.room);
+    
+    // Limit drawing history size
+    if (rooms[data.room].drawing.length > 1000) {
+      rooms[data.room].drawing = rooms[data.room].drawing.slice(-1000);
     }
     
     console.log(`beginPath in room ${data.room}`);
@@ -311,9 +379,65 @@ io.on('connection', (socket) => {
   });
 });
 
-const PORT = process.env.PORT || 5000;
+// Room cleanup for inactive rooms
+setInterval(() => {
+  const now = Date.now();
+  Object.keys(rooms).forEach(roomId => {
+    // If room has been inactive for 2 hours, delete it
+    if (rooms[roomId].lastActivity && now - rooms[roomId].lastActivity > 2 * 60 * 60 * 1000) {
+      // Clear any timers before deleting
+      if (rooms[roomId].timer) {
+        clearInterval(rooms[roomId].timer);
+      }
+      delete rooms[roomId];
+      console.log(`Deleted inactive room: ${roomId}`);
+    }
+  });
+}, 30 * 60 * 1000); // Check every 30 minutes
+
+// Track server stats
+let stats = {
+  activeConnections: 0,
+  totalRooms: 0,
+  totalPlayers: 0,
+  memoryUsage: 0
+};
+
+// Update stats every minute
+setInterval(() => {
+  stats.activeConnections = io.engine.clientsCount;
+  stats.totalRooms = Object.keys(rooms).length;
+  stats.totalPlayers = Object.values(rooms).reduce((sum, room) => sum + room.players.length, 0);
+  stats.memoryUsage = process.memoryUsage().heapUsed / 1024 / 1024; // MB
+  
+  console.log('Server stats:', stats);
+  
+  // If memory usage is too high, clear inactive rooms more aggressively
+  if (stats.memoryUsage > 450) { // 450MB (Render free tier has 512MB)
+    const now = Date.now();
+    Object.keys(rooms).forEach(roomId => {
+      if (rooms[roomId].lastActivity && now - rooms[roomId].lastActivity > 30 * 60 * 1000) {
+        if (rooms[roomId].timer) {
+          clearInterval(rooms[roomId].timer);
+        }
+        delete rooms[roomId];
+        console.log(`Memory cleanup: deleted room ${roomId}`);
+      }
+    });
+  }
+}, 60 * 1000);
+
+// Add a health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({ 
+    status: 'ok',
+    stats: stats
+  });
+});
+
+const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
 
 app.get('/', (req, res) => {

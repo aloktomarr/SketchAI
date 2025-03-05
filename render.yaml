@@ -1,9 +1,13 @@
-   services:
-     - type: web
-       name: skribble-backend
-       env: node
-       buildCommand: npm install
-       startCommand: node server.js
-       envVars:
-         - key: NODE_ENV
-           value: production
+services:
+  - type: web
+    name: sketchai-backend
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+    healthCheckPath: /health
