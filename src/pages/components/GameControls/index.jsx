@@ -1,12 +1,11 @@
 import React from 'react';
-import styles from './index.module.css';
 
 const GameControls = ({ gameState, onStartGame }) => {
   return (
-    <div className={styles.gameControls}>
+    <div className="gameControls">
       {gameState === 'lobby' && (
         <button 
-          className={styles.startGameButton}
+          className="startGameButton"
           onClick={onStartGame}
         >
           Start Game
