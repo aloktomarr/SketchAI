@@ -164,12 +164,7 @@ const Board = () => {
 
   return (
     <div>
-      <img
-        src="https://i.ibb.co/7Yp4H6P/Group-12.png"
-        alt=""
-        style={{ position: "absolute", top: 0, left: 0, scale: "0.6" }}
-        className={styles.logo}
-      />
+    
       <canvas ref={canvasRef} ></canvas>
     </div>
   );
