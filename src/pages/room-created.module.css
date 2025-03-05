@@ -1,70 +1,72 @@
-.roomCreatedContainer {
+.container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  min-height: 100vh;
+  padding: 2rem;
   background-color: #f0f4f8;
   font-family: 'Arial', sans-serif;
 }
 
-.roomCreatedContainer h1 {
-  font-size: 2rem;
+.container h1 {
+  font-size: 2.5rem;
   color: #333;
+  margin-bottom: 1rem;
+}
+
+.container p {
+  font-size: 1.2rem;
+  color: #666;
   margin-bottom: 2rem;
 }
 
-.urlContainer {
-  margin: 20px 0;
-  text-align: center;
-}
-
-.urlContainer p {
-  margin-bottom: 10px;
-  color: #666;
-}
-
-.urlBox {
+.linkContainer {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 2rem;
+}
+
+.linkInput {
+  flex: 1;
+  padding: 1rem;
+  font-size: 1rem;
+  border: 2px solid #ddd;
+  border-right: none;
+  border-radius: 8px 0 0 8px;
   background-color: white;
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.urlBox span {
-  font-family: monospace;
-  color: #333;
-}
-
-.urlBox button {
-  padding: 5px 10px;
-  background-color: #28a745;
+.copyButton {
+  padding: 1rem 2rem;
+  background-color: #4caf50;
   color: white;
+  font-size: 1rem;
+  font-weight: bold;
   border: none;
-  border-radius: 3px;
+  border-radius: 0 8px 8px 0;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s;
 }
 
-.urlBox button:hover {
-  background-color: #218838;
+.copyButton:hover {
+  background-color: #45a049;
 }
 
-.enterButton {
-  margin-top: 20px;
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #007bff;
+.joinButton {
+  padding: 1rem 3rem;
+  background-color: #2196f3;
   color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.enterButton:hover {
-  background-color: #0056b3;
+.joinButton:hover {
+  background-color: #0b7dda;
 } 

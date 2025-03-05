@@ -2,20 +2,10 @@
   "builds": [
     {
       "src": "package.json",
-      "use": "@vercel/next",
-      "config": {
-        "serverless": true
-      }
+      "use": "@vercel/next"
     }
   ],
-  "routes": [
-    {
-      "src": "/room-created",
-      "dest": "/room-created"
-    },
-    {
-      "src": "/components/WordSelection",
-      "dest": "/components/WordSelection"
-    }
-  ]
+  "env": {
+    "NEXT_DISABLE_PRERENDER": "1"
+  }
 } 

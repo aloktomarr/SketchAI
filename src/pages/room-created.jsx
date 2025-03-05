@@ -4,30 +4,37 @@ import styles from './room-created.module.css';
 
 const RoomCreated = () => {
   const router = useRouter();
-  const { room } = router.query;
+  const { roomId, room } = router.query; // Note: using roomId instead of room to match your URL
   const [roomLink, setRoomLink] = useState('');
   const [isMounted, setIsMounted] = useState(false);
+  const [copied, setCopied] = useState(false);
   
   useEffect(() => {
     setIsMounted(true);
-    // Only access window in useEffect (client-side only)
-    if (room) {
+    // Check for both room and roomId parameters
+    const roomIdentifier = roomId || room;
+    if (roomIdentifier) {
       const baseUrl = typeof window !== 'undefined' 
         ? window.location.origin 
         : '';
-      setRoomLink(`${baseUrl}/room/${room}`);
+      setRoomLink(`${baseUrl}/room/${roomIdentifier}`);
     }
-  }, [room]);
+  }, [roomId, room]);
 
   const copyToClipboard = () => {
     if (typeof navigator !== 'undefined' && roomLink) {
       navigator.clipboard.writeText(roomLink);
-      alert('Room link copied to clipboard!');
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     }
   };
 
   if (!isMounted) {
-    return <div>Loading...</div>;
+    return (
+      <div className={styles.container}>
+        <h1>Loading...</h1>
+      </div>
+    );
   }
 
   return (
@@ -42,11 +49,11 @@ const RoomCreated = () => {
           className={styles.linkInput}
         />
         <button onClick={copyToClipboard} className={styles.copyButton}>
-          Copy
+          {copied ? 'Copied!' : 'Copy'}
         </button>
       </div>
       <button
-        onClick={() => router.push(`/room/${room}`)}
+        onClick={() => router.push(`/room/${roomId}`)}
         className={styles.joinButton}
       >
         Join Room
