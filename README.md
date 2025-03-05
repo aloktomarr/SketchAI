@@ -1,10 +1,10 @@
-# SketchAI + Skribble
+# Sketch + Skribble
 
 A real-time collaborative drawing platform word-guessing game mode. Inspired by Excalidraw and Skribble.io, this full-stack application demonstrates advanced WebSocket implementation, real-time data synchronization, and interactive canvas manipulation.
 
 ## 🌟 Live Demo
 
-Experience the application live: [SketchAI on Vercel](https://sketchskribb.vercel.app)
+Experience the application live: [SketchSkribble on Vercel](https://sketchskribb.vercel.app)
 
 ## 📓 Features 
 
@@ -74,10 +74,10 @@ Experience the application live: [SketchAI on Vercel](https://sketchskribb.verce
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/SketchAI.git
+git clone https://github.com/yourusername/SketchSkribble.git
 
 # Navigate to the project directory
-cd SketchAI
+cd SketchSkribble
 
 # Install dependencies
 npm install
