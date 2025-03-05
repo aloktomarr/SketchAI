@@ -4,23 +4,23 @@ const { Server } = require('socket.io');
 const cors = require('cors');
 
 const app = express();
-app.use(cors());
+
+// Near the top of your file
+const allowedOrigins = process.env.ALLOWED_ORIGINS 
+  ? process.env.ALLOWED_ORIGINS.split(',') 
+  : ['https://sketchskribb.vercel.app', 'https://www.sketchskribb.vercel.app'];
+
+// Configure CORS for Express
+app.use(cors({
+  origin: process.env.NODE_ENV === 'production' ? allowedOrigins : '*',
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
 
 const server = http.createServer(app);
 
 // Track connections per IP
 const connectionsPerIP = {};
-
-// Configure CORS for Socket.io
-const io = new Server(server, {
-  cors: {
-    origin: process.env.NODE_ENV === 'production' 
-      ? ["https://sketchai.vercel.app", "https://www.sketchai.vercel.app"] 
-      : "*",
-    methods: ["GET", "POST"]
-  },
-  pingTimeout: 60000, // Increase timeout for better connection stability
-});
 
 // Room data storage
 let rooms = {};
@@ -429,9 +429,11 @@ setInterval(() => {
 
 // Add a health check endpoint
 app.get('/health', (req, res) => {
+  res.header('Access-Control-Allow-Origin', '*');
   res.status(200).json({ 
     status: 'ok',
-    stats: stats
+    cors: 'enabled',
+    origins: process.env.NODE_ENV === 'production' ? allowedOrigins : '*'
   });
 });
 

@@ -67,11 +67,26 @@ const Room = () => {
   useEffect(() => {
     if (!room || !isConnected || !mounted) return;
     
-    console.log(`Joining room ${room} as ${userName.current}`);
+    console.log(`Attempting to join room ${room} as ${userName.current}`);
+    
+    // Add a specific handler for room not found
+    const handleRoomNotFound = () => {
+      console.error(`Room ${room} not found`);
+      setMessages([{
+        text: 'Room does not exist. Please check the room ID or create a new room.',
+        time: new Date().toLocaleTimeString(),
+        isSystem: true
+      }]);
+    };
+    
+    socket.on('roomNotFound', handleRoomNotFound);
+    
+    // Join the room
     socket.emit('joinRoom', { room, name: userName.current });
     roomJoined.current = true;
 
     return () => {
+      socket.off('roomNotFound', handleRoomNotFound);
       roomJoined.current = false;
     };
   }, [room, isConnected, mounted]);
