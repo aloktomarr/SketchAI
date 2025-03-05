@@ -1,1 +1,20 @@
- 
+.gameControls {
+  display: flex;
+  justify-content: center;
+  margin: 15px 0;
+}
+
+.startGameButton {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.startGameButton:hover {
+  background-color: #45a049;
+}
