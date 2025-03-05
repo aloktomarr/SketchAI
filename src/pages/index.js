@@ -1,11 +1,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import Landing from './Landing/landing';
+
 export default function Home() {
-  const router = useRouter();
-
-  useEffect(() => {
-    router.push('/Lobby/lobby');
-  }, [router]);
-
-  return null;
+  return <Landing />;
 }

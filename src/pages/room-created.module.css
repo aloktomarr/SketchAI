@@ -1,0 +1,70 @@
+.roomCreatedContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f0f4f8;
+  font-family: 'Arial', sans-serif;
+}
+
+.roomCreatedContainer h1 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 2rem;
+}
+
+.urlContainer {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.urlContainer p {
+  margin-bottom: 10px;
+  color: #666;
+}
+
+.urlBox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.urlBox span {
+  font-family: monospace;
+  color: #333;
+}
+
+.urlBox button {
+  padding: 5px 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.urlBox button:hover {
+  background-color: #218838;
+}
+
+.enterButton {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.enterButton:hover {
+  background-color: #0056b3;
+} 

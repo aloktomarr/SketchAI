@@ -1,74 +1,140 @@
 .roomContainer {
   display: flex;
   height: 100vh;
+  width: 100%;
   background-color: #f0f4f8;
   font-family: 'Arial', sans-serif;
+  overflow: hidden;
 }
 
+/* Rankings/Players section */
 .rankings {
   width: 20%;
-  padding: 10px;
-  border-right: 1px solid #ccc;
+  padding: 15px;
   background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .rankings h2 {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 1.5rem;
+  text-align: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
 }
 
-.rankings ul {
+.playersList {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
-.rankings li {
-  margin-bottom: 5px;
-  padding: 5px;
-  background-color: #e9ecef;
+.playerItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #f5f5f5;
   border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
+.playerName {
+  font-weight: bold;
+  color: #333;
+}
+
+.playerScore {
+  background-color: #007bff;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+}
+
+/* Board section */
+.board {
+  flex: 1;
+  position: relative;
+  background-color: #202124;
+  overflow: hidden;
+}
+
+/* Chat section */
 .chat {
   width: 20%;
-  padding: 10px;
-  border-left: 1px solid #ccc;
+  padding: 15px;
   background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
 }
 
 .chat h2 {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 1.5rem;
+  text-align: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
 }
 
 .messages {
   flex: 1;
-  overflow-y: scroll;
-  margin-bottom: 10px;
+  overflow-y: auto;
   padding: 10px;
-  background-color: #e9ecef;
+  background-color: #f5f5f5;
   border-radius: 5px;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
 }
 
-.messages p {
-  margin: 5px 0;
+.messageItem {
+  margin-bottom: 12px;
+  background-color: white;
   padding: 10px;
-  background-color: #fff;
   border-radius: 5px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.messageSender {
+  font-weight: bold;
+  color: #007bff;
+  margin-right: 8px;
+}
+
+.messageTime {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.messageText {
+  margin-top: 5px;
+  word-break: break-word;
+}
+
+.systemMessage {
+  color: #6c757d;
+  font-style: italic;
+  text-align: center;
+}
+
+.messageInput {
+  display: flex;
+  gap: 10px;
 }
 
 .roomInput {
+  flex: 1;
   padding: 10px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  margin-bottom: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .roomButton {
@@ -79,7 +145,7 @@
   color: white;
   border: none;
   border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s ease;
 }
 
@@ -87,12 +153,47 @@
   background-color: #0056b3;
 }
 
-.board {
-  flex: 1;
-  padding: 10px;
+/* Responsive design */
+@media (max-width: 1024px) {
+  .roomContainer {
+    flex-direction: column;
+  }
+  
+  .rankings, .chat {
+    width: 100%;
+    height: 25vh;
+  }
+  
+  .board {
+    height: 50vh;
+  }
+}
+
+/* Add these styles to the end of your existing CSS file */
+
+.ownMessage {
+  background-color: #e3f2fd;
+  margin-left: 20px;
+  border-left: 3px solid #007bff;
+}
+
+.connectionError {
   display: flex;
   flex-direction: column;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f0f4f8;
+  font-family: 'Arial', sans-serif;
+  text-align: center;
+  padding: 2rem;
+}
+
+.connectionError h1 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.connectionError p {
+  color: #666;
 }

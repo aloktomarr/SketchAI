@@ -4,9 +4,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { changeColor, changeBrushSize } from "@/slice/toolboxSlice";
 import cx from 'classnames'
 import { socket } from "@/socket";
+import { useRouter } from "next/router";
 
 
 const Toolbox = () => {
+  const router = useRouter();
+  const { room } = router.query;
+  
   const dispatch = useDispatch();
   const activeMenuItem = useSelector((state) => state.menu.activeMenuItem);
   const showStroke = activeMenuItem === MENU_ITEMS.PENCIL;
@@ -17,14 +21,18 @@ const Toolbox = () => {
   const {color, size} = useSelector((state) => state.toolbox[activeMenuItem]);
 
   const updateBrushSize = (e) => {
-      dispatch(changeBrushSize({item: activeMenuItem, size: e.target.value}))
-      socket.emit('changeConfig', {color: color, size: e.target.value})
-    };
+    dispatch(changeBrushSize({item: activeMenuItem, size: e.target.value}));
+    if (room) {
+      socket.emit('changeConfig', {room, color: color, size: e.target.value});
+    }
+  };
 
   const updateColor = (newColor) => {
-      dispatch(changeColor({item: activeMenuItem, color: newColor}))
-      socket.emit('changeConfig', {color: newColor, size})
-    };
+    dispatch(changeColor({item: activeMenuItem, color: newColor}));
+    if (room) {
+      socket.emit('changeConfig', {room, color: newColor, size});
+    }
+  };
 
     return (<div className={styles.toolboxContainer}>
       {showStroke && <div className={styles.toolItem}>
