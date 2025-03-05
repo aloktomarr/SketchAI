@@ -75,4 +75,4 @@ To set up the project locally, follow these steps:
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-NEXT_PUBLIC_SOCKET_URL=https://sketchai-backend.onrender.com
+
